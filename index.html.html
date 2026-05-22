@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Digital Mirror</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#020617;
+    overflow-x:hidden;
+    color:white;
+}
+
+/* PARTICLES */
+
+.particle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:white;
+    border-radius:50%;
+    opacity:0.15;
+    animation:float 12s linear infinite;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(100vh);
+    }
+    to{
+        transform:translateY(-100vh);
+    }
+}
+
+/* NAVBAR */
+
+nav{
+    width:100%;
+    padding:25px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:fixed;
+    top:0;
+    z-index:1000;
+
+    background:rgba(0,0,0,0.15);
+    backdrop-filter:blur(15px);
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    color:#7dd3fc;
+    letter-spacing:1px;
+}
+
+.menu-btn{
+    font-size:30px;
+    cursor:pointer;
+}
+
+/* SIDE MENU */
+
+.side-menu{
+    position:fixed;
+    top:0;
+    right:-320px;
+    width:300px;
+    height:100vh;
+
+    background:rgba(15,23,42,0.96);
+
+    backdrop-filter:blur(20px);
+
+    padding:100px 35px;
+
+    transition:0.6s;
+    z-index:999;
+}
+
+.side-menu.active{
+    right:0;
+}
+
+.side-menu a{
+    display:block;
+    text-decoration:none;
+    color:white;
+    margin:28px 0;
+    font-size:20px;
+    transition:0.3s;
+}
+
+.side-menu a:hover{
+    color:#38bdf8;
+    transform:translateX(6px);
+}
+
+/* HERO */
+
+.hero{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+/* GLOW */
+
+.glow{
+    position:absolute;
+    width:650px;
+    height:650px;
+
+    background:rgba(56,189,248,0.16);
+
+    border-radius:50%;
+    filter:blur(120px);
+
+    animation:pulse 4s infinite alternate;
+}
+
+@keyframes pulse{
+
+from{
+    transform:scale(1);
+}
+
+to{
+    transform:scale(1.1);
+}
+
+}
+
+/* MIRROR */
+
+.mirror-container{
+
+    position:absolute;
+
+    width:430px;
+    height:430px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    backdrop-filter:blur(10px);
+
+    border:2px solid rgba(255,255,255,0.12);
+
+    box-shadow:0 0 60px rgba(56,189,248,0.12);
+
+    animation:mirrorFloat 5s ease-in-out infinite;
+
+}
+
+@keyframes mirrorFloat{
+
+0%{
+transform:translateY(0px);
+}
+
+50%{
+transform:translateY(-10px);
+}
+
+100%{
+transform:translateY(0px);
+}
+
+}
+
+.mirror{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+    135deg,
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.02)
+    );
+}
+
+/* LIGHT REFLECTION */
+
+.reflection{
+    position:absolute;
+
+    width:200%;
+    height:60%;
+
+    background:
+    linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.2),
+    transparent
+    );
+
+    transform:rotate(25deg);
+
+    animation:shine 5s infinite;
+}
+
+@keyframes shine{
+
+0%{
+left:-250%;
+top:20%;
+}
+
+100%{
+left:150%;
+top:20%;
+}
+
+}
+
+/* CRACK */
+
+.crack{
+    position:absolute;
+    width:100%;
+    height:100%;
+    opacity:0;
+    transform:scale(0.6);
+}
+
+/* OVERLAY */
+
+.overlay{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0);
+    transition:1.5s;
+}
+
+.overlay.active{
+    background:rgba(0,0,0,0.35);
+}
+
+/* CONTENT */
+
+.content{
+    position:relative;
+    z-index:20;
+    max-width:850px;
+    padding:20px;
+
+    animation:fadeIn 2s;
+}
+
+@keyframes fadeIn{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+h1{
+    font-size:82px;
+    letter-spacing:5px;
+    margin-bottom:20px;
+
+    background:
+    linear-gradient(
+    to right,
+    #7dd3fc,
+    #38bdf8,
+    #22d3ee
+    );
+
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.tagline{
+    font-size:22px;
+    line-height:1.7;
+    color:#cbd5e1;
+    margin-bottom:40px;
+    transition:1s;
+}
+
+/* BUTTON */
+
+.btn{
+    padding:15px 35px;
+    border:none;
+    border-radius:40px;
+
+    background:
+    linear-gradient(
+    to right,
+    #38bdf8,
+    #0ea5e9
+    );
+
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.06);
+}
+
+/* FLOATING WORDS */
+
+.word{
+    position:absolute;
+    color:rgba(255,255,255,0);
+    font-size:18px;
+    letter-spacing:2px;
+    transition:2s;
+}
+
+.word.show{
+    color:rgba(255,255,255,0.18);
+}
+
+.word1{
+    top:22%;
+    left:14%;
+}
+
+.word2{
+    top:72%;
+    right:15%;
+}
+
+.word3{
+    bottom:18%;
+    left:25%;
+}
+
+.word4{
+    top:35%;
+    right:12%;
+}
+
+/* BREAK EFFECT */
+
+.break{
+    animation:breakMirror 1.2s forwards;
+}
+
+@keyframes breakMirror{
+
+0%{
+transform:scale(1) rotate(0deg);
+}
+
+20%{
+transform:scale(1.02) rotate(-1deg);
+}
+
+40%{
+transform:scale(1.02) rotate(1deg);
+}
+
+60%{
+transform:scale(1.03) rotate(-1deg);
+}
+
+80%{
+transform:scale(1) rotate(1deg);
+}
+
+100%{
+transform:scale(1);
+filter:brightness(0.75);
+}
+
+}
+
+/* CRACK ANIMATION */
+
+.crack.show{
+    animation:crackAppear 1.2s forwards;
+}
+
+@keyframes crackAppear{
+
+0%{
+opacity:0;
+transform:scale(0.5);
+}
+
+100%{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
+/* FOOTER */
+
+.footer{
+    position:absolute;
+    bottom:30px;
+    width:100%;
+    text-align:center;
+    font-size:14px;
+    color:#94a3b8;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+h1{
+    font-size:52px;
+}
+
+.tagline{
+    font-size:18px;
+}
+
+.mirror-container{
+    width:300px;
+    height:300px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- PARTICLES -->
+
+<div class="particle" style="left:10%; animation-delay:0s;"></div>
+<div class="particle" style="left:25%; animation-delay:2s;"></div>
+<div class="particle" style="left:40%; animation-delay:4s;"></div>
+<div class="particle" style="left:60%; animation-delay:1s;"></div>
+<div class="particle" style="left:75%; animation-delay:5s;"></div>
+<div class="particle" style="left:90%; animation-delay:3s;"></div>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">Digital Mirror</div>
+
+<div class="menu-btn" onclick="openMenu()">
+☰
+</div>
+
+</nav>
+
+<!-- SIDE MENU -->
+
+<div class="side-menu" id="menu">
+
+<a href="#">Home</a>
+<a href="#">About</a>
+<a href="#">Education</a>
+<a href="#">Reflection</a>
+<a href="#">Solution</a>
+
+</div>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="glow"></div>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- MIRROR -->
+
+<div class="mirror-container" id="mirrorContainer">
+
+<div class="mirror"></div>
+
+<div class="reflection"></div>
+
+<img class="crack" id="crack"
+src="https://pngimg.com/d/glass_PNG37.png">
+
+</div>
+
+<!-- WORDS -->
+
+<div class="word word1" id="w1">
+comparison
+</div>
+
+<div class="word word2" id="w2">
+pressure
+</div>
+
+<div class="word word3" id="w3">
+insecure
+</div>
+
+<div class="word word4" id="w4">
+not enough
+</div>
+
+<!-- CONTENT -->
+
+<div class="content">
+
+<h1>DIGITAL MIRROR</h1>
+
+<p class="tagline" id="tagline">
+How do you see yourself?
+</p>
+
+<button class="btn" onclick="breakMirror()">
+Start Reflection
+</button>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+Website edukasi [Psikologi Pendidikan](chatgpt://generic-entity?number=0) tentang pengaruh sosial media terhadap siswa.
+</div>
+
+</section>
+
+<!-- SOUND -->
+
+<audio id="crackSound">
+<source src="https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* MENU */
+
+function openMenu(){
+
+document.getElementById("menu")
+.classList.toggle("active");
+
+}
+
+/* BREAK MIRROR */
+
+function breakMirror(){
+
+// sound
+document.getElementById("crackSound").play();
+
+// break animation
+document.getElementById("mirrorContainer")
+.classList.add("break");
+
+// crack appear
+document.getElementById("crack")
+.classList.add("show");
+
+// dark overlay
+document.getElementById("overlay")
+.classList.add("active");
+
+// floating words
+document.getElementById("w1")
+.classList.add("show");
+
+document.getElementById("w2")
+.classList.add("show");
+
+document.getElementById("w3")
+.classList.add("show");
+
+document.getElementById("w4")
+.classList.add("show");
+
+// text change
+document.getElementById("tagline").innerHTML =
+"Or are you seeing yourself through social media?";
+
+}
+
+</script>
+
+</body>
+</html>
